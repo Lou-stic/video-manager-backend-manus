@@ -248,12 +248,15 @@
             }
         }
 
+        // CORRECTION PRINCIPALE : charger les vidéos depuis le backend correctement
         function loadVideosFromServer() {
             fetch('/api/videos')
                 .then(res => res.json())
                 .then(data => {
+                    // data est un tableau [{position: 1, embed_code: ...}, ...]
                     for (let i = 1; i <= 4; i++) {
-                        const code = data[`video${i}`] || '';
+                        const video = data.find(v => v.position === i);
+                        const code = video ? video.embed_code : '';
                         const embedCodeField = document.getElementById(`embedCode${i}`);
                         if (embedCodeField) embedCodeField.value = code;
                         updateVideoDisplay(i, code);
