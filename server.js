@@ -7,8 +7,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Importer les routes
-const videoRoutes = require('./controllers/videoRoutes');
-const authRoutes = require('./controllers/authRoutes');
+const videoController = require('./controllers/videoController');
+const authController = require('./controllers/authController');
 
 // Créer l'application Express
 const app = express();
