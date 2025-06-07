@@ -4,10 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionnaire de Vidéos</title>
-    <!-- ... (tes styles inchangés) ... -->
     <style>
-        /* ... (tout ton CSS existant, inchangé) ... */
-        /* (Tu peux garder tout ton CSS actuel) */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        body { background-color: #f5f5f5; padding: 20px; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; margin-bottom: 30px; color: #333; }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .video-card { background-color: #f9f9f9; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.05); transition: transform 0.3s ease; }
+        .video-card:hover { transform: translateY(-5px); }
+        .video-container { position: relative; width: 100%; padding-top: 56.25%; background-color: #000; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #222; color: #fff; font-size: 18px; }
+        .video-controls { padding: 15px; display: none; }
+        .video-controls textarea { width: 100%; height: 80px; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; font-family: monospace; }
+        .button-group { display: flex; gap: 10px; }
+        button { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background-color 0.3s; }
+        .btn-validate { background-color: #4CAF50; color: white; }
+        .btn-validate:hover { background-color: #45a049; }
+        .btn-edit { background-color: #2196F3; color: white; }
+        .btn-edit:hover { background-color: #0b7dda; }
+        .admin-button { position: fixed; bottom: 20px; right: 20px; background-color: #333; color: white; padding: 10px 15px; border-radius: 4px; cursor: pointer; opacity: 0.5; transition: opacity 0.3s; }
+        .admin-button:hover { opacity: 0.8; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background-color: white; padding: 30px; border-radius: 8px; width: 90%; max-width: 400px; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+        .modal h2 { margin-bottom: 20px; color: #333; }
+        .modal input { width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; }
+        .modal-buttons { display: flex; justify-content: space-between; }
+        .btn-cancel { background-color: #f44336; color: white; }
+        .btn-cancel:hover { background-color: #d32f2f; }
+        .btn-login { background-color: #4CAF50; color: white; }
+        .btn-login:hover { background-color: #45a049; }
+        .admin-message { display: none; background-color: #4CAF50; color: white; text-align: center; padding: 15px; margin-bottom: 20px; border-radius: 4px; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 768px) {
+            .video-grid { grid-template-columns: 1fr; }
+            .container { padding: 15px; }
+            h1 { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -20,9 +53,7 @@
             <!-- Vidéo 1 -->
             <div class="video-card">
                 <div class="video-container" id="videoContainer1">
-                    <div class="video-placeholder" id="videoPlaceholder1">
-                        Aucune vidéo intégrée
-                    </div>
+                    <div class="video-placeholder" id="videoPlaceholder1">Aucune vidéo intégrée</div>
                 </div>
                 <div class="video-controls" id="videoControls1">
                     <textarea id="embedCode1" placeholder="Collez le code d'intégration (iframe/embed) ici"></textarea>
@@ -35,9 +66,7 @@
             <!-- Vidéo 2 -->
             <div class="video-card">
                 <div class="video-container" id="videoContainer2">
-                    <div class="video-placeholder" id="videoPlaceholder2">
-                        Aucune vidéo intégrée
-                    </div>
+                    <div class="video-placeholder" id="videoPlaceholder2">Aucune vidéo intégrée</div>
                 </div>
                 <div class="video-controls" id="videoControls2">
                     <textarea id="embedCode2" placeholder="Collez le code d'intégration (iframe/embed) ici"></textarea>
@@ -50,9 +79,7 @@
             <!-- Vidéo 3 -->
             <div class="video-card">
                 <div class="video-container" id="videoContainer3">
-                    <div class="video-placeholder" id="videoPlaceholder3">
-                        Aucune vidéo intégrée
-                    </div>
+                    <div class="video-placeholder" id="videoPlaceholder3">Aucune vidéo intégrée</div>
                 </div>
                 <div class="video-controls" id="videoControls3">
                     <textarea id="embedCode3" placeholder="Collez le code d'intégration (iframe/embed) ici"></textarea>
@@ -65,9 +92,7 @@
             <!-- Vidéo 4 -->
             <div class="video-card">
                 <div class="video-container" id="videoContainer4">
-                    <div class="video-placeholder" id="videoPlaceholder4">
-                        Aucune vidéo intégrée
-                    </div>
+                    <div class="video-placeholder" id="videoPlaceholder4">Aucune vidéo intégrée</div>
                 </div>
                 <div class="video-controls" id="videoControls4">
                     <textarea id="embedCode4" placeholder="Collez le code d'intégration (iframe/embed) ici"></textarea>
@@ -91,11 +116,8 @@
         </div>
     </div>
     <script>
-        // Mot de passe admin
         const PASSWORD = "admini";
         let isAdminMode = false;
-
-        // Éléments DOM
         const adminButton = document.getElementById('adminButton');
         const authModal = document.getElementById('authModal');
         const passwordInput = document.getElementById('passwordInput');
@@ -103,9 +125,15 @@
         const cancelAuth = document.getElementById('cancelAuth');
         const adminMessage = document.getElementById('adminMessage');
 
-        // Initialisation au chargement de la page
         document.addEventListener('DOMContentLoaded', function() {
+            // Toujours masquer les contrôles admin et le message admin au démarrage !
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`videoControls${i}`).style.display = 'none';
+            }
+            adminMessage.style.display = 'none';
+
             loadVideosFromServer();
+
             for (let i = 1; i <= 4; i++) {
                 const embedCodeField = document.getElementById(`embedCode${i}`);
                 if (embedCodeField) {
@@ -116,7 +144,7 @@
             }
         });
 
-        // Événements pour le modal d'authentification
+        // Authentification admin
         adminButton.addEventListener('click', function() {
             authModal.style.display = 'flex';
             passwordInput.focus();
@@ -141,7 +169,6 @@
             }
         });
 
-        // Fonction d'authentification
         function authenticateAdmin() {
             const password = passwordInput.value;
             if (password === PASSWORD) {
@@ -221,7 +248,6 @@
             }
         }
 
-        // Charger les vidéos depuis l'API
         function loadVideosFromServer() {
             fetch('/api/videos')
                 .then(res => res.json())
