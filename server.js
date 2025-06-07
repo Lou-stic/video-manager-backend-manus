@@ -1,158 +1,43 @@
-let isAdminMode = false; // Toujours en mode public par défaut
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const dotenv = require('dotenv');
 
-// Éléments DOM
-const adminButton = document.getElementById('adminButton');
-const authModal = document.getElementById('authModal');
-const passwordInput = document.getElementById('passwordInput');
-const loginButton = document.getElementById('loginButton');
-const cancelAuth = document.getElementById('cancelAuth');
-const adminMessage = document.getElementById('adminMessage');
+// Charger les variables d'environnement
+dotenv.config();
 
-const PASSWORD = "admini";
+// Importer les routes
+const videoController = require('./controllers/videoController');
+const authController = require('./controllers/authController');
 
-// Initialisation au chargement de la page
-document.addEventListener('DOMContentLoaded', function() {
-    loadVideosFromServer();
+// Créer l'application Express
+const app = express();
+const PORT = process.env.PORT || 10000;
 
-    for (let i = 1; i <= 4; i++) {
-        const embedCodeField = document.getElementById(`embedCode${i}`);
-        if (embedCodeField) {
-            embedCodeField.addEventListener('input', function() {
-                previewVideo(i, this.value);
-            });
-        }
-    }
+// Middleware
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Servir les fichiers statiques du dossier 'public'
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes API
+app.use('/api/videos', videoController);
+app.use('/api/auth', authController);
+
+// Route de test API (optionnelle)
+app.get('/api', (req, res) => {
+  res.json({ message: 'API Gestionnaire de Vidéos - Backend fonctionnel' });
 });
 
-// Événements pour le modal d'authentification
-adminButton.addEventListener('click', function() {
-    authModal.style.display = 'flex';
-    passwordInput.focus();
-    passwordInput.value = '';
-});
-cancelAuth.addEventListener('click', function() {
-    authModal.style.display = 'none';
-    passwordInput.value = '';
-});
-loginButton.addEventListener('click', function() {
-    authenticateAdmin();
-});
-passwordInput.addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') {
-        authenticateAdmin();
-    }
-});
-window.addEventListener('click', function(event) {
-    if (event.target === authModal) {
-        authModal.style.display = 'none';
-        passwordInput.value = '';
-    }
+// Démarrer le serveur
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Serveur démarré sur le port ${PORT}`);
 });
 
-// Fonction d'authentification
-function authenticateAdmin() {
-    const password = passwordInput.value;
-    if (password === PASSWORD) {
-        enableAdminMode();
-        authModal.style.display = 'none';
-        passwordInput.value = '';
-    } else {
-        alert('Mot de passe incorrect');
-    }
-}
-function enableAdminMode() {
-    isAdminMode = true;
-    for (let i = 1; i <= 4; i++) {
-        const controls = document.getElementById(`videoControls${i}`);
-        if (controls) controls.style.display = 'block';
-    }
-    adminMessage.style.display = 'block';
-}
-function disableAdminMode() {
-    isAdminMode = false;
-    for (let i = 1; i <= 4; i++) {
-        const controls = document.getElementById(`videoControls${i}`);
-        if (controls) controls.style.display = 'none';
-    }
-    adminMessage.style.display = 'none';
-}
-
-// Valider et sauvegarder une vidéo
-function validateVideo(index) {
-    const embedCode = document.getElementById(`embedCode${index}`).value;
-    if (embedCode.trim() === '') {
-        alert('Veuillez entrer un code d\'intégration valide');
-        return;
-    }
-    // Sauvegarde via API
-    fetch(`/api/videos/${index}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ embedCode })
-    })
-    .then(r => {
-        if (!r.ok) throw new Error("Erreur lors de la sauvegarde");
-        updateVideoDisplay(index, embedCode);
-    })
-    .catch(e => alert("Erreur de sauvegarde : " + e.message));
-}
-
-function editVideo(index) {
-    const embedCodeField = document.getElementById(`embedCode${index}`);
-    if (embedCodeField) embedCodeField.focus();
-}
-
-function previewVideo(index, embedCode) {
-    if (embedCode.trim() !== '') {
-        updateVideoDisplay(index, embedCode, true);
-    }
-}
-
-function updateVideoDisplay(index, embedCode, isPreview = false) {
-    const container = document.getElementById(`videoContainer${index}`);
-    const placeholder = document.getElementById(`videoPlaceholder${index}`);
-    if (!container || !placeholder) return;
-    // Supprimer l'iframe existant s'il y en a un
-    const existingIframe = container.querySelector('iframe');
-    if (existingIframe) {
-        container.removeChild(existingIframe);
-    }
-    // Créer un élément temporaire pour extraire l'iframe
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = embedCode;
-    const iframe = tempDiv.querySelector('iframe');
-    if (iframe) {
-        placeholder.style.display = 'none';
-        container.appendChild(iframe);
-        iframe.style.position = 'absolute';
-        iframe.style.top = '0';
-        iframe.style.left = '0';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = 'none';
-    } else {
-        placeholder.style.display = 'flex';
-    }
-}
-
-// Charger les vidéos depuis le serveur (API)
-function loadVideosFromServer() {
-    fetch('/api/videos')
-        .then(res => res.json())
-        .then(data => {
-            for (let i = 1; i <= 4; i++) {
-                const code = data[`video${i}`] || '';
-                const embedCodeField = document.getElementById(`embedCode${i}`);
-                if (embedCodeField) embedCodeField.value = code;
-                updateVideoDisplay(i, code);
-            }
-        })
-        .catch(() => alert("Impossible de charger les vidéos depuis le serveur"));
-}
-
-// Déconnexion admin avec Escape
-window.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape' && isAdminMode) {
-        disableAdminMode();
-    }
-});
+module.exports = app;
