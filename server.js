@@ -24,8 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes API
-app.use('/api/videos', videoRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/videos', videoController);
+app.use('/api/auth', authController);
 
 // Route de test pour vérifier que le serveur fonctionne
 app.get('/', (req, res) => {
