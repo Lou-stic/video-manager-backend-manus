@@ -196,24 +196,39 @@
             adminMessage.style.display = 'none';
         }
 
-        // Valider et sauvegarder une vidéo côté API
+        // Sauvegarde vidéo : POST si nouvelle, PUT si déjà existante
         function validateVideo(index) {
             const embedCode = document.getElementById(`embedCode${index}`).value;
             if (embedCode.trim() === '') {
                 alert('Veuillez entrer un code d\'intégration valide');
                 return;
             }
-            fetch(`/api/videos/${index}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ embedCode })
-            })
-            .then(r => {
-                if (!r.ok) throw new Error("Erreur lors de la sauvegarde");
-                updateVideoDisplay(index, embedCode);
-            })
-            .catch(e => alert("Erreur de sauvegarde : " + e.message));
+            // On vérifie si la vidéo existe déjà (pour POST ou PUT)
+            fetch(`/api/videos/${index}`)
+                .then(r => {
+                    if (r.ok) {
+                        // Existe déjà : PUT (mise à jour)
+                        return fetch(`/api/videos/${index}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ embedCode })
+                        });
+                    } else {
+                        // N'existe pas : POST (création)
+                        return fetch(`/api/videos`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ position: index, embedCode })
+                        });
+                    }
+                })
+                .then(r => {
+                    if (!r.ok) throw new Error("Erreur lors de la sauvegarde");
+                    updateVideoDisplay(index, embedCode);
+                })
+                .catch(e => alert("Erreur de sauvegarde : " + e.message));
         }
+
         function editVideo(index) {
             const embedCodeField = document.getElementById(`embedCode${index}`);
             if (embedCodeField) embedCodeField.focus();
@@ -248,12 +263,15 @@
             }
         }
 
+        // Charger les vidéos depuis le backend correctement
         function loadVideosFromServer() {
             fetch('/api/videos')
                 .then(res => res.json())
                 .then(data => {
+                    // data est un tableau [{position: 1, embed_code: ...}, ...]
                     for (let i = 1; i <= 4; i++) {
-                        const code = data[`video${i}`] || '';
+                        const video = data.find(v => v.position === i);
+                        const code = video ? video.embed_code : '';
                         const embedCodeField = document.getElementById(`embedCode${i}`);
                         if (embedCodeField) embedCodeField.value = code;
                         updateVideoDisplay(i, code);
