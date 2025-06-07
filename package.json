@@ -1,5 +1,5 @@
 {
-  "name": "video-manager-backend",
+  "name": "video-manager-backend-manus",
   "version": "1.0.0",
   "description": "Backend pour la gestion de vidéos avec persistance partagée",
   "main": "server.js",
