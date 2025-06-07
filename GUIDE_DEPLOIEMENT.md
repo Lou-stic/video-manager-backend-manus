@@ -49,7 +49,7 @@ git push origin main
 6. Dans la section "Environment", ajoutez ces variables :
    - `PORT` : 10000
    - `JWT_SECRET` : video_manager_secret_key_production
-   - `ADMIN_PASSWORD` : admini
+   - `ADMIN_PASSWORD` : admin
    - `NODE_ENV` : production
 7. Cliquez sur "Create Web Service"
 
@@ -67,7 +67,7 @@ Pour mettre à jour le frontend afin qu'il utilise ce backend permanent :
 
 1. Accédez à votre frontend
 2. Vérifiez que vous pouvez voir les vidéos existantes
-3. Testez l'authentification admin avec le mot de passe "admini"
+3. Testez l'authentification admin avec le mot de passe "admin"
 4. Testez l'ajout et la modification de vidéos
 
 ## Remarques importantes
