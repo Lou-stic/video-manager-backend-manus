@@ -77,14 +77,16 @@ router.post('/', (req, res) => {
 
 // Mettre à jour une vidéo (PUT)
 router.put('/:position', (req, res) => {
-  const { position } = req.params;
+  // LIGNE DE DEBUG ! (tu peux la retirer si tout marche)
+  console.log('PUT req.body:', req.body);
+
   const { embed_code } = req.body;
 
   if (!embed_code) {
     return res.status(400).json({ error: 'Code d\'intégration requis' });
   }
 
-  db.get('SELECT * FROM videos WHERE position = ?', [position], (err, row) => {
+  db.get('SELECT * FROM videos WHERE position = ?', [req.params.position], (err, row) => {
     if (err) {
       console.error(err.message);
       return res.status(500).json({ error: 'Erreur lors de la récupération de la vidéo' });
@@ -96,7 +98,7 @@ router.put('/:position', (req, res) => {
 
     db.run(
       'UPDATE videos SET embed_code = ?, updated_at = CURRENT_TIMESTAMP WHERE position = ?',
-      [embed_code, position],
+      [embed_code, req.params.position],
       function(err) {
         if (err) {
           console.error(err.message);
@@ -105,7 +107,7 @@ router.put('/:position', (req, res) => {
 
         res.json({
           id: row.id,
-          position,
+          position: req.params.position,
           embed_code,
           message: 'Vidéo mise à jour avec succès'
         });
@@ -116,9 +118,7 @@ router.put('/:position', (req, res) => {
 
 // Supprimer une vidéo
 router.delete('/:position', (req, res) => {
-  const { position } = req.params;
-
-  db.run('DELETE FROM videos WHERE position = ?', [position], function(err) {
+  db.run('DELETE FROM videos WHERE position = ?', [req.params.position], function(err) {
     if (err) {
       console.error(err.message);
       return res.status(500).json({ error: 'Erreur lors de la suppression de la vidéo' });
