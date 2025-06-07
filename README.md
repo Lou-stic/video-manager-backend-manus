@@ -37,7 +37,7 @@ git push origin mainÉtape 3 : Déployer sur Render
 10. Dans la section "Environment", ajoutez ces variables :
 11. PORT : 10000
 12. JWT_SECRET : video_manager_secret_key_production
-13. ADMIN_PASSWORD : admini
+13. ADMIN_PASSWORD : admin
 14. NODE_ENV : production
 15. Cliquez sur "Create Web Service"
 Étape 4 : Mettre à jour le frontend
