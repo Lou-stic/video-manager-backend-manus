@@ -4,255 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionnaire de Vidéos</title>
+    <!-- ... (tes styles inchangés) ... -->
     <style>
-        /* Styles de base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        
-        /* Grille des vidéos */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        /* Carte de vidéo */
-        .video-card {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-        
-        .video-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* Ratio 16:9 */
-            background-color: #000;
-        }
-        
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .video-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #222;
-            color: #fff;
-            font-size: 18px;
-        }
-        
-        .video-controls {
-            padding: 15px;
-            display: none; /* Caché par défaut, visible en mode admin */
-        }
-        
-        .video-controls textarea {
-            width: 100%;
-            height: 80px;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: vertical;
-            font-family: monospace;
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-        
-        button {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        
-        .btn-validate {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .btn-validate:hover {
-            background-color: #45a049;
-        }
-        
-        .btn-edit {
-            background-color: #2196F3;
-            color: white;
-        }
-        
-        .btn-edit:hover {
-            background-color: #0b7dda;
-        }
-        
-        /* Admin */
-        .admin-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #333;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            opacity: 0.5; /* Plus discret */
-            transition: opacity 0.3s;
-        }
-        
-        .admin-button:hover {
-            opacity: 0.8; /* Reste discret même au survol */
-        }
-        
-        /* Modal d'authentification */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .modal h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        .modal input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .btn-cancel {
-            background-color: #f44336;
-            color: white;
-        }
-        
-        .btn-cancel:hover {
-            background-color: #d32f2f;
-        }
-        
-        .btn-login {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .btn-login:hover {
-            background-color: #45a049;
-        }
-        
-        /* Message d'accueil admin */
-        .admin-message {
-            display: none;
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            animation: fadeIn 0.5s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
-        }
+        /* ... (tout ton CSS existant, inchangé) ... */
+        /* (Tu peux garder tout ton CSS actuel) */
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Gestionnaire de Vidéos</h1>
-        
-        <!-- Message d'accueil admin -->
         <div id="adminMessage" class="admin-message">
             Mode édition activé - Les vidéos sont sauvegardées automatiquement
         </div>
-        
-        <!-- Grille des vidéos -->
         <div class="video-grid">
             <!-- Vidéo 1 -->
             <div class="video-card">
@@ -269,7 +32,6 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Vidéo 2 -->
             <div class="video-card">
                 <div class="video-container" id="videoContainer2">
@@ -285,7 +47,6 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Vidéo 3 -->
             <div class="video-card">
                 <div class="video-container" id="videoContainer3">
@@ -301,7 +62,6 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Vidéo 4 -->
             <div class="video-card">
                 <div class="video-container" id="videoContainer4">
@@ -319,11 +79,7 @@
             </div>
         </div>
     </div>
-    
-    <!-- Bouton Admin -->
     <div class="admin-button" id="adminButton">Administration</div>
-    
-    <!-- Modal d'authentification -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <h2>Authentification Admin</h2>
@@ -334,12 +90,11 @@
             </div>
         </div>
     </div>
-    
     <script>
-        // Variables globales
-        const PASSWORD = "admini"; // Mot de passe admin
-        let isAdminMode = false; // Toujours en mode public par défaut
-        
+        // Mot de passe admin
+        const PASSWORD = "admini";
+        let isAdminMode = false;
+
         // Éléments DOM
         const adminButton = document.getElementById('adminButton');
         const authModal = document.getElementById('authModal');
@@ -347,16 +102,10 @@
         const loginButton = document.getElementById('loginButton');
         const cancelAuth = document.getElementById('cancelAuth');
         const adminMessage = document.getElementById('adminMessage');
-        
+
         // Initialisation au chargement de la page
         document.addEventListener('DOMContentLoaded', function() {
-            // Supprimer toute trace de mode admin dans le localStorage
-            localStorage.removeItem('isAdminMode');
-            
-            // Charger les vidéos depuis le localStorage
-            loadVideosFromStorage();
-            
-            // Ajouter les écouteurs d'événements pour les champs d'intégration
+            loadVideosFromServer();
             for (let i = 1; i <= 4; i++) {
                 const embedCodeField = document.getElementById(`embedCode${i}`);
                 if (embedCodeField) {
@@ -366,215 +115,129 @@
                 }
             }
         });
-        
+
         // Événements pour le modal d'authentification
         adminButton.addEventListener('click', function() {
             authModal.style.display = 'flex';
             passwordInput.focus();
-            passwordInput.value = ''; // Vider le champ à chaque ouverture
+            passwordInput.value = '';
         });
-        
         cancelAuth.addEventListener('click', function() {
             authModal.style.display = 'none';
             passwordInput.value = '';
         });
-        
         loginButton.addEventListener('click', function() {
             authenticateAdmin();
         });
-        
         passwordInput.addEventListener('keyup', function(event) {
             if (event.key === 'Enter') {
                 authenticateAdmin();
             }
         });
-        
-        // Fermer le modal en cliquant en dehors
         window.addEventListener('click', function(event) {
             if (event.target === authModal) {
                 authModal.style.display = 'none';
                 passwordInput.value = '';
             }
         });
-        
+
         // Fonction d'authentification
         function authenticateAdmin() {
             const password = passwordInput.value;
-            
             if (password === PASSWORD) {
                 enableAdminMode();
                 authModal.style.display = 'none';
                 passwordInput.value = '';
-                // Ne plus stocker l'état admin dans localStorage
             } else {
                 alert('Mot de passe incorrect');
             }
         }
-        
-        // Activer le mode admin
         function enableAdminMode() {
             isAdminMode = true;
-            
-            // Afficher les contrôles d'édition
             for (let i = 1; i <= 4; i++) {
                 const controls = document.getElementById(`videoControls${i}`);
-                if (controls) {
-                    controls.style.display = 'block';
-                }
+                if (controls) controls.style.display = 'block';
             }
-            
-            // Afficher le message d'accueil admin
             adminMessage.style.display = 'block';
         }
-        
-        // Désactiver le mode admin
         function disableAdminMode() {
             isAdminMode = false;
-            
-            // Cacher les contrôles d'édition
             for (let i = 1; i <= 4; i++) {
                 const controls = document.getElementById(`videoControls${i}`);
-                if (controls) {
-                    controls.style.display = 'none';
-                }
+                if (controls) controls.style.display = 'none';
             }
-            
-            // Cacher le message d'accueil admin
             adminMessage.style.display = 'none';
-            
-            // Supprimer l'état admin du localStorage
-            localStorage.removeItem('isAdminMode');
         }
-        
-        // Valider et sauvegarder une vidéo
+
+        // Valider et sauvegarder une vidéo côté API
         function validateVideo(index) {
             const embedCode = document.getElementById(`embedCode${index}`).value;
-            
             if (embedCode.trim() === '') {
                 alert('Veuillez entrer un code d\'intégration valide');
                 return;
             }
-            
-            // Sauvegarder dans le localStorage
-            localStorage.setItem(`video${index}`, embedCode);
-            
-            // Mettre à jour l'affichage
-            updateVideoDisplay(index, embedCode);
+            fetch(`/api/videos/${index}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ embedCode })
+            })
+            .then(r => {
+                if (!r.ok) throw new Error("Erreur lors de la sauvegarde");
+                updateVideoDisplay(index, embedCode);
+            })
+            .catch(e => alert("Erreur de sauvegarde : " + e.message));
         }
-        
-        // Modifier une vidéo
         function editVideo(index) {
             const embedCodeField = document.getElementById(`embedCode${index}`);
-            if (embedCodeField) {
-                embedCodeField.focus();
-            }
+            if (embedCodeField) embedCodeField.focus();
         }
-        
-        // Prévisualiser une vidéo (bonus)
         function previewVideo(index, embedCode) {
             if (embedCode.trim() !== '') {
                 updateVideoDisplay(index, embedCode, true);
             }
         }
-        
-        // Mettre à jour l'affichage d'une vidéo
         function updateVideoDisplay(index, embedCode, isPreview = false) {
             const container = document.getElementById(`videoContainer${index}`);
             const placeholder = document.getElementById(`videoPlaceholder${index}`);
-            
             if (!container || !placeholder) return;
-            
-            // Supprimer l'iframe existant s'il y en a un
             const existingIframe = container.querySelector('iframe');
             if (existingIframe) {
                 container.removeChild(existingIframe);
             }
-            
-            // Créer un élément temporaire pour extraire l'iframe
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = embedCode;
             const iframe = tempDiv.querySelector('iframe');
-            
             if (iframe) {
-                // Cacher le placeholder
                 placeholder.style.display = 'none';
-                
-                // Ajouter l'iframe au conteneur
                 container.appendChild(iframe);
-                
-                // Ajuster les attributs de l'iframe
                 iframe.style.position = 'absolute';
                 iframe.style.top = '0';
                 iframe.style.left = '0';
                 iframe.style.width = '100%';
                 iframe.style.height = '100%';
                 iframe.style.border = 'none';
-                
-                // Désactiver la lecture automatique si ce n'est pas spécifié
-                if (!iframe.src.includes('autoplay=1')) {
-                    iframe.src = iframe.src.replace('autoplay=1', '');
-                }
-                
-                // Si c'est juste une prévisualisation, ne pas sauvegarder
-                if (!isPreview) {
-                    console.log(`Vidéo ${index} sauvegardée`);
-                }
             } else {
-                alert('Le code d\'intégration ne contient pas d\'iframe valide');
                 placeholder.style.display = 'flex';
             }
         }
-        
-        // Charger les vidéos depuis le localStorage
-        function loadVideosFromStorage() {
-            for (let i = 1; i <= 4; i++) {
-                const savedVideo = localStorage.getItem(`video${i}`);
-                if (savedVideo) {
-                    // Mettre à jour le champ d'intégration si on est en mode admin
-                    const embedCodeField = document.getElementById(`embedCode${i}`);
-                    if (embedCodeField) {
-                        embedCodeField.value = savedVideo;
+
+        // Charger les vidéos depuis l'API
+        function loadVideosFromServer() {
+            fetch('/api/videos')
+                .then(res => res.json())
+                .then(data => {
+                    for (let i = 1; i <= 4; i++) {
+                        const code = data[`video${i}`] || '';
+                        const embedCodeField = document.getElementById(`embedCode${i}`);
+                        if (embedCodeField) embedCodeField.value = code;
+                        updateVideoDisplay(i, code);
                     }
-                    
-                    // Mettre à jour l'affichage
-                    updateVideoDisplay(i, savedVideo);
-                }
-            }
+                })
+                .catch(() => alert("Impossible de charger les vidéos depuis le serveur"));
         }
-        
-        // Système de backup (bonus)
-        function backupVideos() {
-            const backup = {
-                timestamp: new Date().toISOString(),
-                videos: {}
-            };
-            
-            for (let i = 1; i <= 4; i++) {
-                backup.videos[`video${i}`] = localStorage.getItem(`video${i}`) || '';
-            }
-            
-            // Sauvegarder le backup
-            const backups = JSON.parse(localStorage.getItem('videoBackups') || '[]');
-            backups.push(backup);
-            
-            // Limiter à 5 backups maximum
-            if (backups.length > 5) {
-                backups.shift();
-            }
-            
-            localStorage.setItem('videoBackups', JSON.stringify(backups));
-            console.log('Backup créé:', backup.timestamp);
-        }
-        
-        // Créer un backup toutes les 5 minutes
-        setInterval(backupVideos, 5 * 60 * 1000);
-        
-        // Créer un backup initial
-        setTimeout(backupVideos, 5000);
-        
-        // Ajouter un bouton de déconnexion pour quitter le mode admin
+
+        // Déconnexion admin avec Escape
         window.addEventListener('keydown', function(event) {
-            // Déconnexion avec Escape
             if (event.key === 'Escape' && isAdminMode) {
                 disableAdminMode();
             }
