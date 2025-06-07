@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: video-manager-backend
+    name: video-manager-backend-manus
     env: node
     buildCommand: npm install
     startCommand: node server.js
