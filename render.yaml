@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: video-manager-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        value: video_manager_secret_key_production
+      - key: ADMIN_PASSWORD
+        value: admini
+      - key: NODE_ENV
+        value: production
