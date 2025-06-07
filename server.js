@@ -23,14 +23,24 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// AJOUT : Servir les fichiers statiques du dossier 'public'
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Routes API
 app.use('/api/videos', videoController);
 app.use('/api/auth', authController);
 
 // Route de test pour vérifier que le serveur fonctionne
+// (Cette route ne gêne pas le fonctionnement du front)
 app.get('/', (req, res) => {
   res.json({ message: 'API Gestionnaire de Vidéos - Backend fonctionnel' });
 });
+
+// BONUS : Pour que n'importe quelle route (hors /api/...) serve index.html (utile pour le SPA/refresh)
+// Décommente si tu veux que toutes les routes renvoient index.html (optionnel)
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 // Démarrer le serveur
 app.listen(PORT, '0.0.0.0', () => {
